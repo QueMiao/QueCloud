@@ -6,12 +6,12 @@ import com.qcloud.cos.model.*;
 import com.qcloud.cos.region.Region;
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.awt.event.FocusAdapter;
-import java.awt.event.FocusEvent;
+import java.awt.*;
+import java.awt.event.*;
 import java.io.File;
 import java.io.IOException;
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.util.Date;
 import java.util.List;
 
@@ -27,10 +27,8 @@ public class Qcloud  extends JFrame implements ActionListener {
     String courseFile = directory.getCanonicalPath() ;
 
 
-    public static void main(String[] args) throws IOException {
-
+    public static void main(String[] args) throws Exception {
             Qcloud frame = new Qcloud();
-
     }
 
     File file = null;
@@ -58,13 +56,13 @@ public class Qcloud  extends JFrame implements ActionListener {
      COSClient cosclient = null;
     String bucketName = null;
     JComboBox comboBox = null;
-
     JButton download_btn = null;
+    JTextArea dLUrl = null;
 
 
     JButton delbtn = null;
 
-    public Qcloud() throws IOException {
+    public Qcloud() throws Exception{
         this.init();
         setTitle("WitQueCloud");
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -101,10 +99,28 @@ public class Qcloud  extends JFrame implements ActionListener {
         button.setBounds(340, 18, 78, 29);
         contentPane.add(button);
 
+        dLUrl = new JTextArea();
+        dLUrl.setBounds(6,138,413,32);
+        dLUrl.setLineWrap(true);
+        contentPane.add(dLUrl);
+        dLUrl.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                Desktop desktop = Desktop.getDesktop();
+                try {
+                    desktop.browse(new URI(dLUrl.getText()));
+                } catch (IOException e1) {
+                    e1.printStackTrace();
+                } catch (URISyntaxException e1) {
+                    e1.printStackTrace();
+                }
 
+            }
+        });
 
 
         this.getFileList();
+        setArea();
 
         comboBox.addFocusListener(new FocusAdapter() {
             @Override
@@ -112,7 +128,11 @@ public class Qcloud  extends JFrame implements ActionListener {
                getFileList();
             }
         });
-
+        comboBox.addItemListener(new ItemListener() {
+            public void itemStateChanged(ItemEvent e) {
+                setArea();
+            }
+        });
 
 
         button.addActionListener(new ActionListener() {
@@ -143,7 +163,9 @@ public class Qcloud  extends JFrame implements ActionListener {
     }
 
 
-
+        public void setArea(){
+            dLUrl.setText( "http://tools-1251143468.cossh.myqcloud.com/"+comboBox.getSelectedItem());
+        }
 
     public void init(){
         // 1 初始化用户身份信息(secretId, secretKey)
@@ -161,7 +183,6 @@ public class Qcloud  extends JFrame implements ActionListener {
     public void getFileList(){
         //获取文件列表
         comboBox.removeAllItems();
-
         String download = (String) comboBox.getSelectedItem();
         ListObjectsRequest listObjectsRequest = new ListObjectsRequest();
         listObjectsRequest.setBucketName(bucketName);
