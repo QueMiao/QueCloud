@@ -68,14 +68,14 @@ public class Qcloud  extends JFrame implements ActionListener {
         this.init();
         setTitle("WitQueCloud");
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        setBounds(100, 100, 415, 217);
+        setBounds(100, 100, 450, 217);
         contentPane = new JPanel();
         contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
         setContentPane(contentPane);
         contentPane.setLayout(null);
 
         JButton btnNewButton = new JButton("选择文件");
-        btnNewButton.setBounds(251, 18, 78, 29);
+        btnNewButton.setBounds(260, 18, 78, 29);
         contentPane.add(btnNewButton);
 
         textField = new JTextField();
@@ -90,15 +90,15 @@ public class Qcloud  extends JFrame implements ActionListener {
 
 
         delbtn = new JButton("删除");
-        delbtn.setBounds(319, 100, 78, 29);
+        delbtn.setBounds(340, 100, 78, 29);
         contentPane.add(delbtn);
 
         JButton download_btn = new JButton("下载");
-        download_btn.setBounds(251, 100, 78, 29);
+        download_btn.setBounds(260, 100, 78, 29);
         contentPane.add(download_btn);
 
         JButton button = new JButton("上传");
-        button.setBounds(319, 16, 78, 32);
+        button.setBounds(340, 18, 78, 29);
         contentPane.add(button);
 
 
